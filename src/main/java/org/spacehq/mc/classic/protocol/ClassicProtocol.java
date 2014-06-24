@@ -24,13 +24,16 @@ public class ClassicProtocol extends PacketProtocol {
 	}
 
 	public ClassicProtocol(String username) {
+		this(username, "-");
+	}
+
+	public ClassicProtocol(String username, String verificationKey) {
 		this.username = username.contains("@") ? username.substring(0, username.indexOf("@")) : username;
-		this.verificationKey = "-";
+		this.verificationKey = verificationKey;
 	}
 
 	public ClassicProtocol(ServerURLInfo server) {
-		this(server.getUsername());
-		this.verificationKey = server.getVerificationKey();
+		this(server.getUsername(), server.getVerificationKey());
 	}
 
 	@Override
