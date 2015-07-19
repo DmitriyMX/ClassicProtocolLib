@@ -48,49 +48,44 @@ public class VerifyUsersListener extends ServerAdapter {
 
 		@Override
 		public void run() {
-			long lastBeat = System.currentTimeMillis() - 45000;
 			while(this.beating) {
-				long time = System.currentTimeMillis();
-				long timeSince = time - lastBeat;
-				if(timeSince >= 45000) {
-					lastBeat = time;
-					if(this.server.hasGlobalFlag(ClassicConstants.SERVER_INFO_BUILDER_KEY)) {
-						BufferedReader reader = null;
+				if(this.server.hasGlobalFlag(ClassicConstants.SERVER_INFO_BUILDER_KEY)) {
+					BufferedReader reader = null;
+					try {
+						ServerInfo info = this.server.<ServerInfoBuilder>getGlobalFlag(ClassicConstants.SERVER_INFO_BUILDER_KEY).build(this.server);
+						StringBuilder build = new StringBuilder("https://minecraft.net/heartbeat.jsp?");
+						build.append("port=").append(URLEncoder.encode(String.valueOf(info.getPort()), "UTF-8")).append("&");
+						build.append("max=").append(URLEncoder.encode(String.valueOf(info.getMaxPlayers()), "UTF-8")).append("&");
+						build.append("name=").append(URLEncoder.encode(info.getName(), "UTF-8")).append("&");
+						build.append("public=").append(URLEncoder.encode(String.valueOf(info.isPublic()), "UTF-8")).append("&");
+						build.append("version=").append(URLEncoder.encode(String.valueOf(ClassicConstants.PROTOCOL_VERSION), "UTF-8")).append("&");
+						build.append("salt=").append(URLEncoder.encode(this.server.<String>getGlobalFlag(ClassicConstants.SALT_KEY), "UTF-8")).append("&");
+						build.append("users=").append(URLEncoder.encode(String.valueOf(info.getPlayers()), "UTF-8"));
+						reader = new BufferedReader(new InputStreamReader(new URL(build.toString()).openStream()));
+						String resp = reader.readLine();
 						try {
-							ServerInfo info = this.server.<ServerInfoBuilder>getGlobalFlag(ClassicConstants.SERVER_INFO_BUILDER_KEY).build(this.server);
-							StringBuilder build = new StringBuilder("https://minecraft.net/heartbeat.jsp?");
-							build.append("port=").append(URLEncoder.encode(String.valueOf(info.getPort()), "UTF-8")).append("&");
-							build.append("max=").append(URLEncoder.encode(String.valueOf(info.getMaxPlayers()), "UTF-8")).append("&");
-							build.append("name=").append(URLEncoder.encode(info.getName(), "UTF-8")).append("&");
-							build.append("public=").append(URLEncoder.encode(String.valueOf(info.isPublic()), "UTF-8")).append("&");
-							build.append("version=").append(URLEncoder.encode(String.valueOf(ClassicConstants.PROTOCOL_VERSION), "UTF-8")).append("&");
-							build.append("salt=").append(URLEncoder.encode(this.server.<String>getGlobalFlag(ClassicConstants.SALT_KEY), "UTF-8")).append("&");
-							build.append("users=").append(URLEncoder.encode(String.valueOf(info.getPlayers()), "UTF-8"));
-							reader = new BufferedReader(new InputStreamReader(new URL(build.toString()).openStream()));
-							String resp = reader.readLine();
+							new URL(resp);
+							this.server.setGlobalFlag(ClassicConstants.SERVER_URL_KEY, resp);
+						} catch(MalformedURLException e) {
+							System.err.println("Error while performing minecraft.net heartbeat: \"" + resp + "\"");
+						}
+					} catch(Exception e) {
+						System.err.println("Failed to perform minecraft.net heartbeat.");
+						e.printStackTrace();
+					} finally {
+						if(reader != null) {
 							try {
-								new URL(resp);
-								this.server.setGlobalFlag(ClassicConstants.SERVER_URL_KEY, resp);
-							} catch(MalformedURLException e) {
-								System.err.println("Error while performing minecraft.net heartbeat: \"" + resp + "\"");
-							}
-						} catch(Exception e) {
-							System.err.println("Failed to perform minecraft.net heartbeat.");
-							e.printStackTrace();
-						} finally {
-							if(reader != null) {
-								try {
-									reader.close();
-								} catch(IOException e) {
-								}
+								reader.close();
+							} catch(IOException e) {
 							}
 						}
 					}
-				} else {
-					try {
-						Thread.sleep(1000);
-					} catch(InterruptedException e) {
-					}
+				}
+
+				try {
+					Thread.sleep(45000);
+				} catch(InterruptedException e) {
+					break;
 				}
 			}
 		}
