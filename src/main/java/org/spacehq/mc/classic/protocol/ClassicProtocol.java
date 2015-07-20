@@ -37,13 +37,8 @@ public class ClassicProtocol extends PacketProtocol {
 	}
 
 	@Override
-	public boolean needsPacketSizer() {
-		return false;
-	}
-
-	@Override
-	public boolean needsPacketEncryptor() {
-		return false;
+	public String getSRVRecordPrefix() {
+		return "_minecraftclassic";
 	}
 
 	@Override

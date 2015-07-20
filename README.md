@@ -1,30 +1,14 @@
-<b><center><h1>ClassicProtocolLib</h></center></b>
-==========
-
-
-
-<b>About ClassicProtocolLib</b>
---------
-
+# ClassicProtocolLib
 ClassicProtocolLib is a simple library for communicating with a Minecraft Classic client/server. It aims to allow people to make custom bots, clients, or servers for Minecraft Classic easily.
 
-
-<b>Example Code</b>
---------
-
+## Example Code
 See example/org/spacehq/mc/classic/protocol/test/Test.java
 
-
-<b>Building the Source</b>
---------
-
+## Building the Source
 ClassicProtocolLib uses Maven to manage dependencies. Simply run 'mvn clean install' in the source's directory.
-Snapshots (if any exist) can be downloaded <b>[here](http://repo.spacehq.org/content/repositories/snapshots/org/spacehq/classicprotocollib)</b>.
-Releases (if any exist) can be downloaded <b>[here](http://repo.spacehq.org/content/repositories/release/org/spacehq/classicprotocollib)</b>.
 
+Builds can be downloaded **[here](http://build.spacehq.org/job/ClassicProtocolLib)**.
 
-<b>License</b>
----------
-
-ClassicProtocolLib is licensed under the <b>[MIT license](http://www.opensource.org/licenses/mit-license.html)</b>.
+## License
+ClassicProtocolLib is licensed under the **[MIT license](http://www.opensource.org/licenses/mit-license.html)**.
 

@@ -4,7 +4,6 @@ import org.spacehq.mc.classic.protocol.AuthenticationException;
 import org.spacehq.mc.classic.protocol.ClassicConstants;
 import org.spacehq.mc.classic.protocol.ClassicProtocol;
 import org.spacehq.mc.classic.protocol.VerifyUsersListener;
-import org.spacehq.mc.classic.protocol.data.game.PlayerIds;
 import org.spacehq.mc.classic.protocol.data.game.UserType;
 import org.spacehq.mc.classic.protocol.data.heartbeat.ServerInfo;
 import org.spacehq.mc.classic.protocol.data.heartbeat.ServerInfoBuilder;
@@ -25,7 +24,7 @@ import org.spacehq.packetlib.event.session.PacketReceivedEvent;
 import org.spacehq.packetlib.event.session.SessionAdapter;
 import org.spacehq.packetlib.tcp.TcpSessionFactory;
 
-public class Test {
+public class MinecraftClassicProtocolTest {
 	private static final boolean SPAWN_SERVER = true;
 	private static final boolean VERIFY_USERS = false;
 	private static final String SERVER_HOST = "127.0.0.1";
@@ -56,11 +55,14 @@ public class Test {
 						public void packetReceived(PacketReceivedEvent event) {
 							if(event.getPacket() instanceof ClientIdentificationPacket) {
 								event.getSession().send(new ServerIdentificationPacket("Test Server", "A test of a server thing.", UserType.NOT_OP));
+
+								// Only useful for our test; triggers the message.
+								event.getSession().send(new ServerLevelFinalizePacket(128, 128, 128));
 							} else if(event.getPacket() instanceof ClientChatPacket) {
 								ClientChatPacket packet = event.getPacket();
 								String username = event.getSession().getFlag(ClassicConstants.USERNAME_KEY);
-								System.out.println(username + ": " + packet.getMessage());
-								event.getSession().send(new ServerChatPacket(PlayerIds.CONSOLE, "CONSOLE: Hello, &6" + username + "&f!"));
+								System.out.println("[SERVER] " + username + ": " + packet.getMessage());
+								event.getSession().send(new ServerChatPacket(0, username + ": " + packet.getMessage()));
 							}
 						}
 					});
@@ -74,13 +76,15 @@ public class Test {
 			});
 
 			server.bind();
-			while(!server.hasGlobalFlag(ClassicConstants.SERVER_URL_KEY)) {
-				try {
-					Thread.sleep(250);
-				} catch(InterruptedException e) {
-				}
+			if(VERIFY_USERS) {
+				while(!server.hasGlobalFlag(ClassicConstants.SERVER_URL_KEY)) {
+					try {
+						Thread.sleep(250);
+					} catch(InterruptedException e) {
+					}
 
-				serverUrl = server.getGlobalFlag(ClassicConstants.SERVER_URL_KEY);
+					serverUrl = server.getGlobalFlag(ClassicConstants.SERVER_URL_KEY);
+				}
 			}
 		}
 
@@ -115,8 +119,8 @@ public class Test {
 				if(event.getPacket() instanceof ServerLevelFinalizePacket) {
 					event.getSession().send(new ClientChatPacket("Hello, this is a test of ClassicProtocolLib."));
 				} else if(event.getPacket() instanceof ServerChatPacket) {
-					System.out.println(event.<ServerChatPacket>getPacket().getMessage());
-					if(!event.<ServerChatPacket>getPacket().getMessage().contains("joined the game")) {
+					System.out.println("[CLIENT] " + event.<ServerChatPacket>getPacket().getMessage());
+					if(event.<ServerChatPacket>getPacket().getMessage().contains("Hello, this is a test of ClassicProtocolLib.")) {
 						event.getSession().disconnect("Finished");
 					}
 				}
@@ -128,6 +132,13 @@ public class Test {
 			}
 		});
 
-		client.getSession().connect();
+		client.getSession().connect(true);
+		while(client.getSession().isConnected()) {
+			try {
+				Thread.sleep(5);
+			} catch(InterruptedException e) {
+				break;
+			}
+		}
 	}
 }
