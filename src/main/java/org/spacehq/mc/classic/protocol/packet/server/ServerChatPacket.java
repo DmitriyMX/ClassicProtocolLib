@@ -7,41 +7,60 @@ import org.spacehq.packetlib.packet.Packet;
 
 import java.io.IOException;
 
+/**
+ * Sent by a server to display a chat message on a client.
+ */
 public class ServerChatPacket implements Packet {
-	private int playerId;
-	private String message;
+    private int playerId;
+    private String message;
 
-	@SuppressWarnings("unused")
-	private ServerChatPacket() {
-	}
+    @SuppressWarnings("unused")
+    private ServerChatPacket() {
+    }
 
-	public ServerChatPacket(int playerId, String message) {
-		this.playerId = playerId;
-		this.message = message;
-	}
+    /**
+     * Creates a new ServerChatPacket instance.
+     *
+     * @param playerId ID of the player sending the chat message.
+     * @param message  Message to send.
+     */
+    public ServerChatPacket(int playerId, String message) {
+        this.playerId = playerId;
+        this.message = message;
+    }
 
-	public int getPlayerId() {
-		return this.playerId;
-	}
+    /**
+     * Gets the ID of the player sending the chat message.
+     *
+     * @return The player's ID.
+     */
+    public int getPlayerId() {
+        return this.playerId;
+    }
 
-	public String getMessage() {
-		return this.message;
-	}
+    /**
+     * Gets the message being sent.
+     *
+     * @return The message being sent.
+     */
+    public String getMessage() {
+        return this.message;
+    }
 
-	@Override
-	public void read(NetInput in) throws IOException {
-		this.playerId = in.readUnsignedByte();
-		this.message = ClassicPacketUtil.readString(in);
-	}
+    @Override
+    public void read(NetInput in) throws IOException {
+        this.playerId = in.readUnsignedByte();
+        this.message = ClassicPacketUtil.readString(in);
+    }
 
-	@Override
-	public void write(NetOutput out) throws IOException {
-		out.writeByte(this.playerId);
-		ClassicPacketUtil.writeString(out, this.message);
-	}
+    @Override
+    public void write(NetOutput out) throws IOException {
+        out.writeByte(this.playerId);
+        ClassicPacketUtil.writeString(out, this.message);
+    }
 
-	@Override
-	public boolean isPriority() {
-		return false;
-	}
+    @Override
+    public boolean isPriority() {
+        return false;
+    }
 }

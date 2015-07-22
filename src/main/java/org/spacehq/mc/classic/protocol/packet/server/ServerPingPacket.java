@@ -6,20 +6,26 @@ import org.spacehq.packetlib.packet.Packet;
 
 import java.io.IOException;
 
+/**
+ * Sent by a server to ping the client and keep the connection alive.
+ */
 public class ServerPingPacket implements Packet {
-	public ServerPingPacket() {
-	}
+    /**
+     * Creates a new ServerPingPacket instance.
+     */
+    public ServerPingPacket() {
+    }
 
-	@Override
-	public void read(NetInput in) throws IOException {
-	}
+    @Override
+    public void read(NetInput in) throws IOException {
+    }
 
-	@Override
-	public void write(NetOutput out) throws IOException {
-	}
+    @Override
+    public void write(NetOutput out) throws IOException {
+    }
 
-	@Override
-	public boolean isPriority() {
-		return false;
-	}
+    @Override
+    public boolean isPriority() {
+        return false;
+    }
 }

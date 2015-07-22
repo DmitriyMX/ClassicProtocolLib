@@ -7,33 +7,46 @@ import org.spacehq.packetlib.packet.Packet;
 
 import java.io.IOException;
 
+/**
+ * Sent by a server to update a client's user type.
+ */
 public class ServerUpdateUserTypePacket implements Packet {
-	private UserType userType;
+    private UserType userType;
 
-	@SuppressWarnings("unused")
-	private ServerUpdateUserTypePacket() {
-	}
+    @SuppressWarnings("unused")
+    private ServerUpdateUserTypePacket() {
+    }
 
-	public ServerUpdateUserTypePacket(UserType userType) {
-		this.userType = userType;
-	}
+    /**
+     * Creates a new ServerUpdateUserTypePacket instance.
+     *
+     * @param userType User type to update to.
+     */
+    public ServerUpdateUserTypePacket(UserType userType) {
+        this.userType = userType;
+    }
 
-	public UserType getUserType() {
-		return this.userType;
-	}
+    /**
+     * Gets the user type to update to.
+     *
+     * @return The user type to update to.
+     */
+    public UserType getUserType() {
+        return this.userType;
+    }
 
-	@Override
-	public void read(NetInput in) throws IOException {
-		this.userType = UserType.values()[in.readUnsignedByte()];
-	}
+    @Override
+    public void read(NetInput in) throws IOException {
+        this.userType = UserType.values()[in.readUnsignedByte()];
+    }
 
-	@Override
-	public void write(NetOutput out) throws IOException {
-		out.writeByte(this.userType.ordinal());
-	}
+    @Override
+    public void write(NetOutput out) throws IOException {
+        out.writeByte(this.userType.ordinal());
+    }
 
-	@Override
-	public boolean isPriority() {
-		return false;
-	}
+    @Override
+    public boolean isPriority() {
+        return false;
+    }
 }

@@ -1,6 +1,15 @@
 package org.spacehq.mc.classic.protocol.data.game;
 
+/**
+ * A user's type.
+ */
 public enum UserType {
-	NOT_OP,
-	OP;
+    /**
+     * Not an operator.
+     */
+    NOT_OP,
+    /**
+     * Operator.
+     */
+    OP;
 }

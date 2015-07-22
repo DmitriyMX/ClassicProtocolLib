@@ -6,33 +6,46 @@ import org.spacehq.packetlib.packet.Packet;
 
 import java.io.IOException;
 
+/**
+ * Sent by a server to despawn a player.
+ */
 public class ServerDespawnPlayerPacket implements Packet {
-	private int playerId;
+    private int playerId;
 
-	@SuppressWarnings("unused")
-	private ServerDespawnPlayerPacket() {
-	}
+    @SuppressWarnings("unused")
+    private ServerDespawnPlayerPacket() {
+    }
 
-	public ServerDespawnPlayerPacket(int playerId) {
-		this.playerId = playerId;
-	}
+    /**
+     * Creates a new ServerDespawnPlayerPacket instance.
+     *
+     * @param playerId ID of the player to despawn.
+     */
+    public ServerDespawnPlayerPacket(int playerId) {
+        this.playerId = playerId;
+    }
 
-	public int getPlayerId() {
-		return this.playerId;
-	}
+    /**
+     * Gets the ID of the player to despawn.
+     *
+     * @return The player's ID.
+     */
+    public int getPlayerId() {
+        return this.playerId;
+    }
 
-	@Override
-	public void read(NetInput in) throws IOException {
-		this.playerId = in.readUnsignedByte();
-	}
+    @Override
+    public void read(NetInput in) throws IOException {
+        this.playerId = in.readUnsignedByte();
+    }
 
-	@Override
-	public void write(NetOutput out) throws IOException {
-		out.writeByte(this.playerId);
-	}
+    @Override
+    public void write(NetOutput out) throws IOException {
+        out.writeByte(this.playerId);
+    }
 
-	@Override
-	public boolean isPriority() {
-		return false;
-	}
+    @Override
+    public boolean isPriority() {
+        return false;
+    }
 }

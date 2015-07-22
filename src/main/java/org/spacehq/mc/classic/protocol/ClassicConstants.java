@@ -1,16 +1,51 @@
 package org.spacehq.mc.classic.protocol;
 
+/**
+ * Contains various protocol constants.
+ */
 public class ClassicConstants {
-	public static final String GAME_VERSION = "0.30";
-	public static final int PROTOCOL_VERSION = 7;
+    /**
+     * Current game version.
+     */
+    public static final String GAME_VERSION = "0.30";
 
-	public static final String USERNAME_KEY = "username";
+    /**
+     * Current protocol version.
+     */
+    public static final int PROTOCOL_VERSION = 7;
 
-	// Client only
-	public static final String VERIFICATION_KEY = "verification-key";
+    /**
+     * Flag key for a session's player username.
+     * <p>
+     * Available on both clients and servers, set automatically based on provided username.
+     */
+    public static final String USERNAME_KEY = "username";
 
-	// Server only
-	public static final String SERVER_INFO_BUILDER_KEY = "server-info-builder";
-	public static final String SERVER_URL_KEY = "server-url";
-	public static final String SALT_KEY = "salt";
+    /**
+     * Flag key for a session's verification key.
+     * <p>
+     * Available only on clients, set automatically based on provided key.
+     */
+    public static final String VERIFICATION_KEY = "verification-key";
+
+    /**
+     * Flag key for a session's server info builder.
+     * <p>
+     * Available only on servers, set by user.
+     */
+    public static final String SERVER_INFO_BUILDER_KEY = "server-info-builder";
+
+    /**
+     * Flag key for a session's server URL.
+     * <p>
+     * Available only on servers, set automatically by server list heartbeat.
+     */
+    public static final String SERVER_URL_KEY = "server-url";
+
+    /**
+     * Flag key for a session's server list salt.
+     * <p>
+     * Available only on servers, set automatically by server list heartbeat.
+     */
+    public static final String SALT_KEY = "salt";
 }

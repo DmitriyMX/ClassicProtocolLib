@@ -7,33 +7,46 @@ import org.spacehq.packetlib.packet.Packet;
 
 import java.io.IOException;
 
+/**
+ * Sent by a server to disconnect a client.
+ */
 public class ServerDisconnectPacket implements Packet {
-	private String reason;
+    private String reason;
 
-	@SuppressWarnings("unused")
-	private ServerDisconnectPacket() {
-	}
+    @SuppressWarnings("unused")
+    private ServerDisconnectPacket() {
+    }
 
-	public ServerDisconnectPacket(String reason) {
-		this.reason = reason;
-	}
+    /**
+     * Creates a new ServerDisconnectPacket instance.
+     *
+     * @param reason Reason for disconnecting.
+     */
+    public ServerDisconnectPacket(String reason) {
+        this.reason = reason;
+    }
 
-	public String getReason() {
-		return this.reason;
-	}
+    /**
+     * Gets the reason for disconnecting.
+     *
+     * @return The reason for disconnecting.
+     */
+    public String getReason() {
+        return this.reason;
+    }
 
-	@Override
-	public void read(NetInput in) throws IOException {
-		this.reason = ClassicPacketUtil.readString(in);
-	}
+    @Override
+    public void read(NetInput in) throws IOException {
+        this.reason = ClassicPacketUtil.readString(in);
+    }
 
-	@Override
-	public void write(NetOutput out) throws IOException {
-		ClassicPacketUtil.writeString(out, this.reason);
-	}
+    @Override
+    public void write(NetOutput out) throws IOException {
+        ClassicPacketUtil.writeString(out, this.reason);
+    }
 
-	@Override
-	public boolean isPriority() {
-		return true;
-	}
+    @Override
+    public boolean isPriority() {
+        return true;
+    }
 }

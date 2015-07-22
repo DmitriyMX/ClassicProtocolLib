@@ -7,65 +7,102 @@ import org.spacehq.packetlib.packet.Packet;
 
 import java.io.IOException;
 
+/**
+ * Sent by a client to set a block.
+ */
 public class ClientSetBlockPacket implements Packet {
-	private int x;
-	private int y;
-	private int z;
-	private SetBlockMode mode;
-	private int block;
+    private int x;
+    private int y;
+    private int z;
+    private SetBlockMode mode;
+    private int block;
 
-	@SuppressWarnings("unused")
-	private ClientSetBlockPacket() {
-	}
+    @SuppressWarnings("unused")
+    private ClientSetBlockPacket() {
+    }
 
-	public ClientSetBlockPacket(int x, int y, int z, SetBlockMode mode, int block) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.mode = mode;
-		this.block = block;
-	}
+    /**
+     * Creates a new ClientSetBlockPacket instance.
+     *
+     * @param x     X of the block to set.
+     * @param y     Y of the block to set.
+     * @param z     Z of the block to set.
+     * @param mode  Mode used to set the block.
+     * @param block Block ID to set.
+     */
+    public ClientSetBlockPacket(int x, int y, int z, SetBlockMode mode, int block) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.mode = mode;
+        this.block = block;
+    }
 
-	public int getX() {
-		return this.x;
-	}
+    /**
+     * Gets the X of the block to set.
+     *
+     * @return The block's X.
+     */
+    public int getX() {
+        return this.x;
+    }
 
-	public int getY() {
-		return this.y;
-	}
+    /**
+     * Gets the Y of the block to set.
+     *
+     * @return The block's Y.
+     */
+    public int getY() {
+        return this.y;
+    }
 
-	public int getZ() {
-		return this.z;
-	}
+    /**
+     * Gets the Z of the block to set.
+     *
+     * @return The block's Z.
+     */
+    public int getZ() {
+        return this.z;
+    }
 
-	public SetBlockMode getMode() {
-		return this.mode;
-	}
+    /**
+     * Gets the mode used to set the block.
+     *
+     * @return The mode used to set the block.
+     */
+    public SetBlockMode getMode() {
+        return this.mode;
+    }
 
-	public int getBlock() {
-		return this.block;
-	}
+    /**
+     * Gets the block ID to set.
+     *
+     * @return The block ID to set.
+     */
+    public int getBlock() {
+        return this.block;
+    }
 
-	@Override
-	public void read(NetInput in) throws IOException {
-		this.x = in.readShort();
-		this.y = in.readShort();
-		this.z = in.readShort();
-		this.mode = SetBlockMode.values()[in.readUnsignedByte()];
-		this.block = in.readUnsignedByte();
-	}
+    @Override
+    public void read(NetInput in) throws IOException {
+        this.x = in.readShort();
+        this.y = in.readShort();
+        this.z = in.readShort();
+        this.mode = SetBlockMode.values()[in.readUnsignedByte()];
+        this.block = in.readUnsignedByte();
+    }
 
-	@Override
-	public void write(NetOutput out) throws IOException {
-		out.writeShort(this.x);
-		out.writeShort(this.y);
-		out.writeShort(this.z);
-		out.writeByte(this.mode.ordinal());
-		out.writeByte(this.block);
-	}
+    @Override
+    public void write(NetOutput out) throws IOException {
+        out.writeShort(this.x);
+        out.writeShort(this.y);
+        out.writeShort(this.z);
+        out.writeByte(this.mode.ordinal());
+        out.writeByte(this.block);
+    }
 
-	@Override
-	public boolean isPriority() {
-		return false;
-	}
+    @Override
+    public boolean isPriority() {
+        return false;
+    }
 }
