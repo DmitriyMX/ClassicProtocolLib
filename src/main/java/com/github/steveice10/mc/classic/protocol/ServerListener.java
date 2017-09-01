@@ -1,7 +1,7 @@
 package com.github.steveice10.mc.classic.protocol;
 
-import com.github.steveice10.mc.classic.protocol.packet.server.ServerDisconnectPacket;
 import com.github.steveice10.mc.classic.protocol.packet.client.ClientIdentificationPacket;
+import com.github.steveice10.mc.classic.protocol.packet.server.ServerDisconnectPacket;
 import com.github.steveice10.packetlib.event.session.DisconnectingEvent;
 import com.github.steveice10.packetlib.event.session.PacketReceivedEvent;
 import com.github.steveice10.packetlib.event.session.SessionAdapter;
